@@ -1,0 +1,10 @@
+[project]
+name = "juego-agilidad"
+version = "0.1.0"
+dependencies = [
+    "flet>=0.22.0",
+]
+
+[tool.flet]
+app-name = "AgilidadMental"
+description = "Desafío Mental Express"
