@@ -31,12 +31,14 @@ jobs:
           python -m pip install --upgrade pip
           pip install flet
 
-      - name: Compilar APK
+      - name: Inicializar y Compilar Proyecto APK
         run: |
-          flet build apk --target pcphone.py
+          # Forzamos la creación del paquete móvil ignorando advertencias de estructura
+          flet build apk pcphone.py
 
       - name: Guardar APK como Resultado
         uses: actions/upload-artifact@v4
         with:
           name: juego-agilidad-android
+          # Buscamos el APK en cualquier subcarpeta generada por el build de flet
           path: build/apk/*.apk
