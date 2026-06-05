@@ -5,13 +5,12 @@ import time
 import os
 import sys
 
-# === PARCHE DE RUTA DE RECURSOS PARA PYINSTALLER ===
-if getattr(sys, 'frozen', False):
-    # Usamos la carpeta temporal de extracción de PyInstaller
+# === PARCHE INTELIGENTE DE RUTA (WINDOWS EXE VS ANDROID) ===
+# Solo se ejecuta si el script está congelado por PyInstaller en Windows
+if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
     base_path = sys._MEIPASS
-    # Forzamos la ruta interna apuntando directamente al paquete flet empaquetado
     os.environ["FLET_CONTROLS_RESOURCE_PATH"] = os.path.join(base_path, "flet", "controls")
-# ===================================================
+# ==========================================================
 
 class JuegoAgilidad:
     def __init__(self, page: ft.Page):
@@ -107,7 +106,6 @@ class JuegoAgilidad:
         )
         self.generar_operacion()
         
-        # Hilo para el reloj
         t = threading.Thread(target=self.reloj_cuenta_atras, daemon=True)
         t.start()
 
