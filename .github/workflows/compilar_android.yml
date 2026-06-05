@@ -20,25 +20,30 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
+          flutter-version: '3.22.0' # Forzamos una versión ultra-estable compatible con Flet
 
       - name: Configurar Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: Instalar Dependencias
+      - name: Instalar Dependencias de Python
         run: |
           python -m pip install --upgrade pip
           pip install flet
 
-      - name: Inicializar y Compilar Proyecto APK
+      - name: Crear Estructura de Compilación Móvil
         run: |
-          # Forzamos la creación del paquete móvil ignorando advertencias de estructura
+          # Inicializamos el build de flet para crear los manifiestos de Android correctamente
+          flet build apk --manifest-only
+
+      - name: Compilar APK Final
+        run: |
+          # Compilamos el APK apuntando directamente a nuestro script principal
           flet build apk pcphone.py
 
       - name: Guardar APK como Resultado
         uses: actions/upload-artifact@v4
         with:
           name: juego-agilidad-android
-          # Buscamos el APK en cualquier subcarpeta generada por el build de flet
           path: build/apk/*.apk
